@@ -12,6 +12,7 @@ public class MainCharacter : MonoBehaviour
     public GameObject mjolnir;
     public GameObject shield;
     public GameObject helmet;
+    Animator lightControl;
 
     AudioSource audio;
     // Start is called before the first frame update
@@ -32,6 +33,9 @@ public class MainCharacter : MonoBehaviour
                 audio.PlayOneShot(lightSwitch);
             }
         }
+
+        if (intermittentLight)
+            lightControl = intermittentLight.GetComponent<Animator>();
 
         Vector3 pos = Input.mousePosition;
         Ray myRay = Camera.main.ScreenPointToRay(pos);
@@ -65,7 +69,7 @@ public class MainCharacter : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Portal"))
         {
-            intermittentLight.SetActive(true);
+            lightControl.SetBool("isOn", true);
         }
         else if(other.gameObject.CompareTag("Ghost"))
             ghost.SetActive(false);
@@ -76,7 +80,7 @@ public class MainCharacter : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Portal"))
         {
-            intermittentLight.SetActive(false);
+            lightControl.SetBool("isOn", false);
             ghost.SetActive(true);
             audio.PlayOneShot(ghostScream);
         }
